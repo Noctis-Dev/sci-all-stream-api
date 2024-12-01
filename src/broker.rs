@@ -1,15 +1,35 @@
 use std::sync::Arc;
 
 use futures::StreamExt;
-use rocket_db_pools::diesel::{prelude::RunQueryDsl, AsyncConnection};
+use rocket_db_pools::diesel::{
+    prelude::RunQueryDsl, 
+    AsyncConnection
+};
 use tokio::task;
-use lapin::{options::BasicConsumeOptions, types::FieldTable, Connection, ConnectionProperties};
-use rocket::{fairing::AdHoc, serde::json::from_slice};
+use lapin::{
+    options::BasicConsumeOptions, 
+    types::FieldTable, 
+    Connection, 
+    ConnectionProperties
+};
+use rocket::{
+    fairing::AdHoc, 
+    serde::json::from_slice
+};
 
-use crate::{dto::stream::{Stream, StreamEvent}, persistance::{diesel_db_pool::Db, schema::streams}};
+use crate::{
+    dto::stream::{
+        Stream, 
+        StreamEvent
+    }, 
+    persistance::{
+        diesel_db_pool::Db, 
+        schema::streams
+    }
+};
 
 async fn rabbit_listener(db: Arc<Db>) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-    let addr = std::env::var("RABBITMQ_ADDR").unwrap_or_else(|_| "amqp://guest:guest@localhost:5672".into());
+    let addr = std::env::var("RABBITMQ_ADDR").unwrap_or_else(|_| "amqp://guest:guest@50.19.40.173:5672".into());
     let conn = Connection::connect(&addr, ConnectionProperties::default()).await?;
 
     let channel = conn.create_channel().await?;
@@ -30,8 +50,6 @@ async fn rabbit_listener(db: Arc<Db>) -> Result<(), Box<dyn std::error::Error + 
 
                 let stream = Stream {
                     uuid: event.uuid.clone(),
-                    title: event.title.clone(),
-                    description: event.description.clone(),
                     access_token: event.access_token.clone(),
                     user_uuid: event.user_id.clone(),
                     created_at: chrono::Utc::now().naive_utc().date(),

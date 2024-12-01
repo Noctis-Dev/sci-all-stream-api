@@ -9,8 +9,6 @@ use crate::persistance::schema::streams;
 #[diesel(table_name = streams)]
 pub struct Stream {
     pub uuid: String,
-    pub title: String,
-    pub description: Option<String>,
     pub access_token: String,
     pub user_uuid: String,
     pub created_at: NaiveDate,
@@ -21,8 +19,6 @@ pub struct Stream {
 #[serde(crate = "rocket::serde")]
 pub struct StreamEvent {
     pub uuid: String,
-    pub title: String,
-    pub description: Option<String>,
     pub user_id: String,
     pub access_token: String,
 }

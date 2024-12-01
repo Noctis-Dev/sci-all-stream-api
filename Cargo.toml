@@ -13,7 +13,6 @@ lapin = "2.5.0"
 futures = "0.3"
 diesel_migrations = "2"
 
-
 [dependencies.rocket_db_pools]
 version = "0.2.0"
 features = ["diesel_mysql"]

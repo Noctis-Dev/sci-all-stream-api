@@ -25,8 +25,6 @@ pub async fn get_streams(mut db: Connection<Db>) -> Result<Json<Vec<Stream>>> {
 pub async fn create_stream(mut db: Connection<Db>, payload: Json<StreamRequest>) -> Result<Created<Json<Stream>>> {
     let stream = Stream {
         uuid: Uuid::new_v4().to_string(),
-        title: payload.0.title.clone(),
-        description: payload.0.description.clone(),
         access_token: Uuid::new_v4().to_string(),
         user_uuid: payload.0.user_id.clone(),
         created_at: chrono::Utc::now().naive_utc().date(),

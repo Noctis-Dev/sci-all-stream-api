@@ -1,2 +1,5 @@
 [default.databases.diesel_mysql]
-url = "mysql://root:Conejo2021%23%23@localhost:3306/sci_streams_db"
+url = "${db_url}"
+
+[default]
+port = 8087
